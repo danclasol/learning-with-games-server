@@ -1,0 +1,10 @@
+{
+	"exclude": ["node_modules"],
+	"compilerOptions": {
+		"module": "nodenext",
+		"baseUrl": "./",
+		"paths": {
+			"#Lib/*": ["./src/lib/*"]
+		}
+	}
+}
