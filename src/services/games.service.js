@@ -1,4 +1,5 @@
 import GameModel from '#Models/game.model.js';
+import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 
 export const findUserGamesService = async ({
 	userId,
@@ -19,13 +20,21 @@ export const findUserGamesService = async ({
 		.limit(limit)
 		.exec();
 
-	return games;
+	const gamesResult = games.map(game => removeIdMongoDB(game));
+
+	return gamesResult;
 };
 
-export const findGameById = async ({ userId, gameId }) => {
-	return await GameModel.find({
-		id: gameId,
+export const findGameById = async ({ userId, id }) => {
+	console.log({ userId, id });
+
+	const data = await GameModel.findOne({
+		_id: id,
 	}).exec();
+
+	const game = removeIdMongoDB(data);
+
+	return game;
 };
 
 export const existsGameByIdService = async id => {
@@ -49,8 +58,9 @@ export const createGameService = async ({ id, type, title, userId }) => {
 	});
 
 	const newGame = await game.save();
+	const resultGame = removeIdMongoDB(newGame);
 
-	return newGame;
+	return resultGame;
 };
 
 export const updateGameService = async ({ id, title }) => {
@@ -72,7 +82,7 @@ export const updateGameService = async ({ id, title }) => {
 	return resultUpdate.modifiedCount > 0;
 };
 
-export const deleteGameService = async id => {
+export const deleteGameService = async ({ id }) => {
 	const gameExists = await existsGameByIdService(id);
 
 	if (!gameExists) {

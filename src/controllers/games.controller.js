@@ -7,7 +7,7 @@ import {
 } from '#Services/games.service.js';
 
 export const getUserGames = async (req, res) => {
-	const userId = req.userId;
+	const userId = 'dani@gmail.com';
 
 	const { title, page, limit, sort, order } = req.query;
 
@@ -29,7 +29,7 @@ export const getUserGames = async (req, res) => {
 
 export const getGameById = async (req, res) => {
 	const { id } = req.params;
-	const userId = req.userId;
+	const userId = 'dani@gmail.com';
 
 	try {
 		const game = await findGameById({ userId, id });
@@ -74,7 +74,12 @@ export const updateGame = async (req, res) => {
 	const { type, title } = body;
 
 	try {
-		const updateResult = await updateGameService({ id, type, title, userId });
+		const updateResult = await updateGameService({
+			id,
+			type,
+			title,
+			userId,
+		});
 
 		if (updateResult) {
 			res.sendStatus(200);
@@ -90,7 +95,7 @@ export const deleteGame = async (req, res) => {
 	const { id } = req.params;
 
 	try {
-		const deletedResult = await deleteGameService(id);
+		const deletedResult = await deleteGameService({ id });
 
 		if (deletedResult) {
 			res.sendStatus(200);
