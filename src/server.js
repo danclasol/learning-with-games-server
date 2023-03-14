@@ -1,4 +1,4 @@
-import connectDB from '#Config/db.js';
+import { connectDB } from '#Config/db.js';
 import '#Config/env.js';
 import httpServer from '#Config/http.js';
 

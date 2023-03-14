@@ -4,14 +4,14 @@
 		"module": "nodenext",
 		"baseUrl": "./",
 		"paths": {
-			"#Lib/*": ["./src/lib/*"],
 			"#Config/*": ["./src/config/*"],
+			"#Lib/*": ["./src/lib/*"],
 			"#Routes/*": ["./src/routes/*"],
-			"#Dto/*": ["./src/dto/*"],
 			"#Controllers/*": ["./src/controllers/*"],
 			"#Services/*": ["./src/services/*"],
 			"#Schemas/*": ["./src/schemas/*"],
 			"#Models/*": ["./src/models/*"],
+			"#Dto/*": ["./src/dto/*"],
 			"#Utils/*": ["./src/utils/*"]
 		}
 	}
