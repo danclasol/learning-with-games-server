@@ -3,17 +3,21 @@ import {
 	deleteGameService,
 	findGameById,
 	findUserGamesService,
-	updateGameService,
+	findUserTotalGameService,
+	updateGameService
 } from '#Services/games.service.js';
 
 export const getUserGames = async (req, res) => {
 	const userId = 'dani@gmail.com';
 
-	const { title, page, limit, sort, order } = req.query;
+	const { title, type, page, limit, sort, order } = req.query;
+
+	const totalGames = await findUserTotalGameService({ userId, title, type });
 
 	const games = await findUserGamesService({
 		userId,
 		title,
+		type,
 		page,
 		limit,
 		sort,
@@ -21,9 +25,12 @@ export const getUserGames = async (req, res) => {
 	});
 
 	if (games) {
+		res.set('total-count', totalGames.length);
+		res.set('Access-Control-Expose-Headers', 'total-count');
+
 		res.status(200).json(games);
 	} else {
-		res.status(404).json('Usuario no existe');
+		res.status(404).json('User not exists');
 	}
 };
 
@@ -37,10 +44,10 @@ export const getGameById = async (req, res) => {
 		if (game) {
 			res.status(200).json(game);
 		} else {
-			res.status(404).json('Juego no existe');
+			res.status(404).json('Game not exists');
 		}
 	} catch (err) {
-		res.status(400).json('Juego no existe');
+		res.status(400).json('Game not exists');
 	}
 };
 
@@ -58,7 +65,7 @@ export const createGame = async (req, res) => {
 		});
 
 		if (!newGame) {
-			res.status(400).json('Juego no creado');
+			res.status(400).json('Game not exists');
 		}
 
 		res.status(202).json(newGame);
@@ -84,7 +91,7 @@ export const updateGame = async (req, res) => {
 		if (updateResult) {
 			res.sendStatus(200);
 		} else {
-			res.status(400).json('Juego no actualizado');
+			res.status(400).json('Game not updted');
 		}
 	} catch (err) {
 		res.status(400).json(err.message);
@@ -100,7 +107,7 @@ export const deleteGame = async (req, res) => {
 		if (deletedResult) {
 			res.sendStatus(200);
 		} else {
-			res.status(400).json('Juego no eliminado');
+			res.status(400).json('Game not deleted');
 		}
 	} catch (err) {
 		res.status(400).json(err.message);

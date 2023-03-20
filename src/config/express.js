@@ -1,3 +1,4 @@
+import findingPairGamesRouter from '#Routes/finding-pairs-games.routes.js';
 import gamesRouter from '#Routes/games.routes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -17,5 +18,9 @@ expressApp.use(express.text());
 
 // Routers
 expressApp.use(`/${VERSION_API}/games`, gamesRouter);
+expressApp.use(
+	`/${VERSION_API}/games/:id/finding-pairs/`,
+	findingPairGamesRouter
+);
 
 export default expressApp;

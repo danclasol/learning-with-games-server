@@ -1,9 +1,24 @@
 import GameModel from '#Models/game.model.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 
+export const findUserTotalGameService = async ({
+	userId,
+	title = '',
+	type = '',
+}) => {
+	const filter = {
+		// userId,
+		title: { $regex: title, $options: 'i' },
+		type: { $regex: type, $options: 'i' },
+	};
+
+	return await GameModel.find(filter).exec();
+};
+
 export const findUserGamesService = async ({
 	userId,
 	title = '',
+	type = '',
 	page,
 	limit,
 	sort,
@@ -12,6 +27,7 @@ export const findUserGamesService = async ({
 	const filter = {
 		/* _id: userId, */
 		title: { $regex: title, $options: 'i' },
+		type: { $regex: type, $options: 'i' },
 	};
 
 	const games = await GameModel.find(filter)
@@ -26,18 +42,16 @@ export const findUserGamesService = async ({
 };
 
 export const findGameById = async ({ userId, id }) => {
-	console.log({ userId, id });
-
 	const data = await GameModel.findOne({
 		_id: id,
 	}).exec();
 
-	const game = removeIdMongoDB(data);
+	const game = data !== null && removeIdMongoDB(data);
 
 	return game;
 };
 
-export const existsGameByIdService = async id => {
+export const existsGameByIdService = async ({ id }) => {
 	const game = await GameModel.findOne({ _id: id }).exec();
 	return Boolean(game);
 };
@@ -46,7 +60,7 @@ export const createGameService = async ({ id, type, title, userId }) => {
 	const gameExists = await existsGameByIdService(id);
 
 	if (gameExists) {
-		throw new Error('Juego ya existe');
+		throw new Error('Game already exists');
 	}
 
 	const game = new GameModel({
@@ -67,7 +81,7 @@ export const updateGameService = async ({ id, title }) => {
 	const gameExists = await existsGameByIdService(id);
 
 	if (!gameExists) {
-		throw new Error('Juego no existe');
+		throw new Error('Game not exists');
 	}
 
 	const resultUpdate = await GameModel.updateOne(
@@ -83,10 +97,10 @@ export const updateGameService = async ({ id, title }) => {
 };
 
 export const deleteGameService = async ({ id }) => {
-	const gameExists = await existsGameByIdService(id);
+	const gameExists = await existsGameByIdService({id});
 
 	if (!gameExists) {
-		throw new Error('Juego no existe');
+		throw new Error('Game not exists');
 	}
 
 	const resultDelete = await GameModel.deleteOne({ _id: id });
