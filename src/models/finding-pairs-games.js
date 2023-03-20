@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
-const GameSchema = new Schema(
+const FindingPairsGameSchema = new Schema(
 	{
 		_id: {
 			type: String,
@@ -39,6 +39,10 @@ const GameSchema = new Schema(
 	}
 );
 
-const GameModel = model('Game', GameSchema);
+const FindingPairsGameModel = model(
+	'FindingPairsGame',
+	FindingPairsGameSchema,
+	'games'
+);
 
-export default GameModel;
+export default FindingPairsGameModel;

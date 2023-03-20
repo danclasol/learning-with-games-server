@@ -1,8 +1,8 @@
-import GameModel from '#Models/game.model.js';
+import FindingPairsGameModel from '#Models/finding-pairs-games.js';
 import { existsGameByIdService } from './games.service.js';
 
 export const existsPairInGameByIdService = async ({ id, pairId }) => {
-	const game = await GameModel.findOne({
+	const game = await FindingPairsGameModel.findOne({
 		_id: id,
 		'pairs.id': pairId,
 	}).exec();
@@ -17,7 +17,7 @@ export const updateGameService = async ({ id, title }) => {
 		throw new Error('Game not exists');
 	}
 
-	const resultUpdate = await GameModel.updateOne(
+	const resultUpdate = await FindingPairsGameModel.updateOne(
 		{ _id: id },
 		{
 			$set: {
@@ -36,9 +36,7 @@ export const addPairToGameService = async ({ id, pairId, text, image }) => {
 		throw new Error('Game not exists');
 	}
 
-	// const idPair = text.toLowerCase().replace(' ', '-');
-
-	const resultUpdate = await GameModel.updateOne(
+	const resultUpdate = await FindingPairsGameModel.updateOne(
 		{ _id: id },
 		{
 			$push: {
@@ -68,7 +66,7 @@ export const updatePairFromGameService = async ({
 		throw new Error('Pair no existe');
 	}
 
-	const resultUpdate = await GameModel.updateOne(
+	const resultUpdate = await FindingPairsGameModel.updateOne(
 		{ _id: id, 'pairs.id': pairId },
 		{
 			$set: {
@@ -94,7 +92,7 @@ export const deletePairFromGameService = async ({ id, pairId }) => {
 		throw new Error('Pair not exists');
 	}
 
-	const resultUpdate = await GameModel.updateOne(
+	const resultUpdate = await FindingPairsGameModel.updateOne(
 		{ _id: id },
 		{
 			$pull: {

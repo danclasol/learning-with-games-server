@@ -1,4 +1,6 @@
+import FindingPairsGameModel from '#Models/finding-pairs-games.js';
 import GameModel from '#Models/game.model.js';
+import HangmanGameModel from '#Models/hangman-games.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 
 export const findUserTotalGameService = async ({
@@ -63,13 +65,27 @@ export const createGameService = async ({ id, type, title, userId }) => {
 		throw new Error('Game already exists');
 	}
 
-	const game = new GameModel({
-		_id: id,
-		type,
-		title,
-		creationDate: new Date(),
-		userId,
-	});
+	let game;
+
+	if (type === 'finding-pairs') {
+		game = new FindingPairsGameModel({
+			_id: id,
+			type,
+			title,
+			creationDate: new Date(),
+			userId,
+		});
+	}
+
+	if (type === 'hangman') {
+		game = new HangmanGameModel({
+			_id: id,
+			type,
+			title,
+			creationDate: new Date(),
+			userId,
+		});
+	}
 
 	const newGame = await game.save();
 	const resultGame = removeIdMongoDB(newGame);
@@ -97,7 +113,7 @@ export const updateGameService = async ({ id, title }) => {
 };
 
 export const deleteGameService = async ({ id }) => {
-	const gameExists = await existsGameByIdService({id});
+	const gameExists = await existsGameByIdService({ id });
 
 	if (!gameExists) {
 		throw new Error('Game not exists');

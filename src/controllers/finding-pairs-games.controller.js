@@ -34,8 +34,6 @@ export const addPairToGame = async (req, res) => {
 	const { body } = req;
 	const { id: pairId, text, image } = body;
 
-	console.log({ id, pairId, text, image });
-
 	try {
 		const updateResult = await addPairToGameService({
 			id,
