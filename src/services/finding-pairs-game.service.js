@@ -1,4 +1,4 @@
-import FindingPairsGameModel from '#Models/finding-pairs-games.js';
+import FindingPairsGameModel from '#Models/finding-pairs-games.model.js';
 import { existsGameByIdService } from './games.service.js';
 
 export const existsPairInGameByIdService = async ({ id, pairId }) => {
