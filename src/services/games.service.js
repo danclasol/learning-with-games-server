@@ -1,6 +1,5 @@
-import FindingPairsGameModel from '#Models/finding-pairs-games.js';
 import GameModel from '#Models/game.model.js';
-import HangmanGameModel from '#Models/hangman-games.js';
+import { createGame } from '#Models/gameFactory.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 
 export const findUserTotalGameService = async ({
@@ -65,27 +64,7 @@ export const createGameService = async ({ id, type, title, userId }) => {
 		throw new Error('Game already exists');
 	}
 
-	let game;
-
-	if (type === 'finding-pairs') {
-		game = new FindingPairsGameModel({
-			_id: id,
-			type,
-			title,
-			creationDate: new Date(),
-			userId,
-		});
-	}
-
-	if (type === 'hangman') {
-		game = new HangmanGameModel({
-			_id: id,
-			type,
-			title,
-			creationDate: new Date(),
-			userId,
-		});
-	}
+	const game = createGame({ id, type, title, userId });
 
 	const newGame = await game.save();
 	const resultGame = removeIdMongoDB(newGame);
