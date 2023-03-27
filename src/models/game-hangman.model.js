@@ -22,8 +22,8 @@ const HangmanGameSchema = new Schema(
 		},
 		words: [
 			{
-				id: { type: String },
-				text: { type: String },
+				word: { type: String },
+				maxTries: { type: Number },
 			},
 		],
 		userId: {

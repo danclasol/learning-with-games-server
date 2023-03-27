@@ -22,7 +22,6 @@ const FindingPairsGameSchema = new Schema(
 		},
 		pairs: [
 			{
-				id: { type: String },
 				text: { type: String },
 				image: { type: String },
 			},

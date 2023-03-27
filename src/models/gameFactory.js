@@ -1,5 +1,5 @@
-import FindingPairsGameModel from '#Models/finding-pairs-games.model.js';
-import HangmanGameModel from '#Models/hangman-games.model.js';
+import FindingPairsGameModel from '#Models/game-finding-pairs.model.js';
+import HangmanGameModel from '#Models/game-hangman.model.js';
 
 export const createGame = ({ id, type, title, userId }) => {
 	let game;

@@ -8,6 +8,9 @@ const UpdateGameDTOSchema = Type.Object(
 	{
 		type: Type.String(),
 		title: titleDTOSchema,
+		pairs: Type.Optional(
+			Type.Array(Type.Object({ text: Type.String(), image: Type.String() }))
+		),
 	},
 	{
 		additionalProperties: true,
