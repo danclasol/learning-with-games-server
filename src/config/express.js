@@ -1,6 +1,7 @@
 import findingPairGamesRouter from '#Routes/game-finding-pairs.routes.js';
 import hangmanGamesRouter from '#Routes/game-hangman.routes.js';
 import gamesRouter from '#Routes/games.routes.js';
+import usersRouter from '#Routes/users.routes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -18,6 +19,7 @@ expressApp.use(express.json());
 expressApp.use(express.text());
 
 // Routers
+expressApp.use(`/${VERSION_API}/users`, usersRouter);
 expressApp.use(`/${VERSION_API}/games`, gamesRouter);
 expressApp.use(
 	`/${VERSION_API}/games/:id/finding-pairs/`,
