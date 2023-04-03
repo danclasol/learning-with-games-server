@@ -1,5 +1,8 @@
+import { SALT } from '#Constants/salt.js';
 import UserModel from '#Models/user.model.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
+import { hash } from 'bcrypt';
+import { nanoid } from 'nanoid';
 
 export const findUserById = async ({ id }) => {
 	const data = await UserModel.findOne({
@@ -27,17 +30,26 @@ export const existsUserByIdService = async ({ id }) => {
 	return Boolean(user);
 };
 
-export const createUserService = async ({ id, name, email }) => {
-	const userExists = await existsUserByIdService(id);
+export const existsUserByEmailService = async email => {
+	const user = await UserModel.findOne({ email }).exec();
+
+	return Boolean(user);
+};
+
+export const createUserService = async ({ name, email, password }) => {
+	const userExists = await existsUserByEmailService(email);
 
 	if (userExists) {
-		throw new Error('User already exists');
+		throw new Error('Email already exists');
 	}
 
+	const hashedPassword = await hash(password, SALT);
+
 	const user = new UserModel({
-		_id: id,
+		_id: nanoid(),
 		name,
 		email,
+		password: hashedPassword,
 	});
 
 	const newUser = await user.save();

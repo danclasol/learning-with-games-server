@@ -13,7 +13,7 @@ const HangmanGameSchema = new Schema(
 			type: String,
 			required: true,
 			minlength: 2,
-			maxlength: 30,
+			maxlength: 50,
 			trim: true,
 		},
 		creationDate: {

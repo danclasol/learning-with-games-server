@@ -8,7 +8,7 @@ export const findUserTotalGameService = async ({
 	type = '',
 }) => {
 	const filter = {
-		// userId,
+		userId,
 		title: { $regex: title, $options: 'i' },
 		type: { $regex: type, $options: 'i' },
 	};
@@ -26,7 +26,7 @@ export const findUserGamesService = async ({
 	order,
 }) => {
 	const filter = {
-		/* _id: userId, */
+		userId,
 		title: { $regex: title, $options: 'i' },
 		type: { $regex: type, $options: 'i' },
 	};
@@ -45,6 +45,7 @@ export const findUserGamesService = async ({
 export const findGameById = async ({ userId, id }) => {
 	const data = await GameModel.findOne({
 		_id: id,
+		// userId,
 	}).exec();
 
 	const game = data !== null && removeIdMongoDB(data);
@@ -58,7 +59,7 @@ export const existsGameByIdService = async ({ id }) => {
 };
 
 export const createGameService = async ({ id, type, title, userId }) => {
-	const gameExists = await existsGameByIdService(id);
+	const gameExists = await existsGameByIdService({ id });
 
 	if (gameExists) {
 		throw new Error('Game already exists');

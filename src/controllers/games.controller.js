@@ -4,12 +4,11 @@ import {
 	findGameById,
 	findUserGamesService,
 	findUserTotalGameService,
-	updateGameService
+	updateGameService,
 } from '#Services/games.service.js';
 
 export const getUserGames = async (req, res) => {
-	const userId = 'dani@gmail.com';
-
+	const userId = req.userId;
 	const { title, type, page, limit, sort, order } = req.query;
 
 	const totalGames = await findUserTotalGameService({ userId, title, type });
@@ -35,11 +34,11 @@ export const getUserGames = async (req, res) => {
 };
 
 export const getGameById = async (req, res) => {
+	const userId = req.userId;
 	const { id } = req.params;
-	const userId = 'dani@gmail.com';
 
 	try {
-		const game = await findGameById({ userId, id });
+		const game = await findGameById({ id, userId });
 
 		if (game) {
 			res.status(200).json(game);
@@ -52,7 +51,7 @@ export const getGameById = async (req, res) => {
 };
 
 export const createGame = async (req, res) => {
-	const userId = 'dani@gmail.com';
+	const userId = req.userId;
 	const { body } = req;
 	const { id, type, title } = body;
 
@@ -75,7 +74,7 @@ export const createGame = async (req, res) => {
 };
 
 export const updateGame = async (req, res) => {
-	const userId = 'dani@gmail.com';
+	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
 	const { type, title } = body;
@@ -99,10 +98,11 @@ export const updateGame = async (req, res) => {
 };
 
 export const deleteGame = async (req, res) => {
+	const userId = req.userId;
 	const { id } = req.params;
 
 	try {
-		const deletedResult = await deleteGameService({ id });
+		const deletedResult = await deleteGameService({ id, userId });
 
 		if (deletedResult) {
 			res.sendStatus(200);

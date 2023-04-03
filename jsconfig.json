@@ -7,6 +7,7 @@
 			"#Config/*": ["./src/config/*"],
 			"#Lib/*": ["./src/lib/*"],
 			"#Routes/*": ["./src/routes/*"],
+			"#Constants/*": ["./src/constants/*"],
 			"#Controllers/*": ["./src/controllers/*"],
 			"#Services/*": ["./src/services/*"],
 			"#Schemas/*": ["./src/schemas/*"],

@@ -1,13 +1,18 @@
-import { titleDTOSchema } from '#Dto/dto-types.js';
 import { Type } from '@sinclair/typebox';
 import Ajv from 'ajv';
 import addErrors from 'ajv-errors';
 import addFormats from 'ajv-formats';
+import {
+	emailDTOSchema,
+	nameDTOSchema,
+	passwordDTOSchema,
+} from './dto-types.js';
 
-const UpdateGameDTOSchema = Type.Object(
+const RegisterDTOSchema = Type.Object(
 	{
-		type: Type.String(),
-		title: titleDTOSchema,
+		name: nameDTOSchema,
+		email: emailDTOSchema,
+		password: passwordDTOSchema,
 	},
 	{
 		additionalProperties: true,
@@ -17,12 +22,14 @@ const UpdateGameDTOSchema = Type.Object(
 const ajv = new Ajv({ allErrors: true })
 	.addKeyword('kind')
 	.addKeyword('modifier');
-addFormats(ajv, ['date']);
+
+ajv.addFormat('password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/);
+addFormats(ajv, ['email', 'password']);
 addErrors(ajv);
 
-const validateSchema = ajv.compile(UpdateGameDTOSchema);
+const validateSchema = ajv.compile(RegisterDTOSchema);
 
-const updateGameDTO = (req, res, next) => {
+const userRegisterDTO = (req, res, next) => {
 	const isDTOValid = validateSchema(req.body);
 
 	if (!isDTOValid) {
@@ -34,4 +41,4 @@ const updateGameDTO = (req, res, next) => {
 	next();
 };
 
-export default updateGameDTO;
+export default userRegisterDTO;

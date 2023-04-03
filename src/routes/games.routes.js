@@ -1,5 +1,3 @@
-import { Router } from 'express';
-
 import {
 	createGame,
 	deleteGame,
@@ -7,6 +5,7 @@ import {
 	getUserGames,
 } from '#Controllers/games.controller.js';
 import validateNewGameDTO from '#Dto/game-new.dto.js';
+import { Router } from 'express';
 
 const gamesRouter = Router({ mergeParams: true });
 

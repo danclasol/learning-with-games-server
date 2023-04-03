@@ -27,7 +27,7 @@ const updateUserDTO = (req, res, next) => {
 	if (!isDTOValid) {
 		return res
 			.status(400)
-			.send({ errors: validateSchema.errors.map(error => error) });
+			.send({ errors: validateSchema.errors.map(error => error.message) });
 	}
 
 	next();

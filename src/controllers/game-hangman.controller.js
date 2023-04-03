@@ -1,7 +1,7 @@
 import { updateGameService } from '#Services/game-hangman.service.js';
 
 export const updateGame = async (req, res) => {
-	const userId = 'dani@gmail.com';
+	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
 	const { type, title, words } = body;

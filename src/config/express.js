@@ -1,3 +1,5 @@
+import userTokenDTO from '#Dto/user-token.dto.js';
+import authRouter from '#Routes/auth.routes.js';
 import findingPairGamesRouter from '#Routes/game-finding-pairs.routes.js';
 import hangmanGamesRouter from '#Routes/game-hangman.routes.js';
 import gamesRouter from '#Routes/games.routes.js';
@@ -18,7 +20,11 @@ expressApp.use(cors());
 expressApp.use(express.json());
 expressApp.use(express.text());
 
-// Routers
+// Public Routers
+expressApp.use(`/${VERSION_API}/auth`, authRouter);
+
+// Private Routers
+expressApp.use(userTokenDTO);
 expressApp.use(`/${VERSION_API}/users`, usersRouter);
 expressApp.use(`/${VERSION_API}/games`, gamesRouter);
 expressApp.use(

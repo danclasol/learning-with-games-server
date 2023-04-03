@@ -1,28 +1,33 @@
-import { titleDTOSchema } from '#Dto/dto-types.js';
 import { Type } from '@sinclair/typebox';
 import Ajv from 'ajv';
 import addErrors from 'ajv-errors';
 import addFormats from 'ajv-formats';
+import { emailDTOSchema, passwordDTOSchema } from './dto-types.js';
 
-const UpdateGameDTOSchema = Type.Object(
+const LoginDTOSchema = Type.Object(
 	{
-		type: Type.String(),
-		title: titleDTOSchema,
+		email: emailDTOSchema,
+		password: passwordDTOSchema,
 	},
 	{
 		additionalProperties: true,
+		errorMessage: {
+			additionalProperties: 'Format object not valid',
+		},
 	}
 );
 
 const ajv = new Ajv({ allErrors: true })
 	.addKeyword('kind')
 	.addKeyword('modifier');
-addFormats(ajv, ['date']);
+
+ajv.addFormat('password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/);
+addFormats(ajv, ['email']);
 addErrors(ajv);
 
-const validateSchema = ajv.compile(UpdateGameDTOSchema);
+const validateSchema = ajv.compile(LoginDTOSchema);
 
-const updateGameDTO = (req, res, next) => {
+const userLoginDTO = (req, res, next) => {
 	const isDTOValid = validateSchema(req.body);
 
 	if (!isDTOValid) {
@@ -34,4 +39,4 @@ const updateGameDTO = (req, res, next) => {
 	next();
 };
 
-export default updateGameDTO;
+export default userLoginDTO;
