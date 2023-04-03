@@ -2,7 +2,7 @@ import { SALT } from '#Constants/salt.js';
 import UserModel from '#Models/user.model.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 import { hash } from 'bcrypt';
-import { nanoid } from 'nanoid';
+import crypto from 'crypto';
 
 export const findUserById = async ({ id }) => {
 	const data = await UserModel.findOne({
@@ -46,7 +46,7 @@ export const createUserService = async ({ name, email, password }) => {
 	const hashedPassword = await hash(password, SALT);
 
 	const user = new UserModel({
-		_id: nanoid(),
+		_id: crypto.randomUUID(),
 		name,
 		email,
 		password: hashedPassword,
