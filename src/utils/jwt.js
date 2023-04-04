@@ -1,3 +1,4 @@
+import { ALGORITHM, EXPIRATION_TIME, TOKEN_TYPE } from '#Constants/jwt.js';
 import { SignJWT, jwtVerify } from 'jose';
 
 export const generateAccessToken = async payload => {
@@ -6,10 +7,11 @@ export const generateAccessToken = async payload => {
 
 	return await jwtConstructor
 		.setProtectedHeader({
-			alg: 'HS256',
+			alg: ALGORITHM,
+			typ: TOKEN_TYPE,
 		})
 		.setIssuedAt()
-		.setExpirationTime('1h')
+		.setExpirationTime(EXPIRATION_TIME)
 		.sign(secret);
 };
 

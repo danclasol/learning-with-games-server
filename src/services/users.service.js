@@ -1,4 +1,4 @@
-import { SALT } from '#Constants/salt.js';
+import { SALT } from '#Constants/bycript.js';
 import UserModel from '#Models/user.model.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 import { hash } from 'bcrypt';
