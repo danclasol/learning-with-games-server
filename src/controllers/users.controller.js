@@ -5,6 +5,22 @@ import {
 	updateUserService,
 } from '#Services/users.service.js';
 
+export const getCurrentUser = async (req, res) => {
+	const userId = req.userId;
+
+	try {
+		const user = await findUserById({ id: userId });
+
+		if (user) {
+			res.status(200).json(user);
+		} else {
+			res.status(404).json('User not exists');
+		}
+	} catch (err) {
+		res.status(400).json('User not exists');
+	}
+};
+
 export const getUserById = async (req, res) => {
 	const { id } = req.params;
 

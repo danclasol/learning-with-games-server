@@ -1,6 +1,7 @@
 import {
 	createUser,
 	deleteUser,
+	getCurrentUser,
 	getUserById,
 	updateUser,
 } from '#Controllers/users.controller.js';
@@ -10,6 +11,7 @@ import { Router } from 'express';
 
 const usersRouter = Router();
 
+usersRouter.get('/account', getCurrentUser);
 usersRouter.get('/:id', getUserById);
 usersRouter.post('/', validateNewUserDTO, createUser);
 usersRouter.put('/:id', validateUpdateUserDTO, updateUser);
