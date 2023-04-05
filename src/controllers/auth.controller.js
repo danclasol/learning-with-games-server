@@ -18,7 +18,6 @@ export const login = async (req, res) => {
 
 		return res.send({ accessToken, user });
 	} catch (err) {
-		console.error(err);
 		return res.status(500).send();
 	}
 };
@@ -30,7 +29,7 @@ export const register = async (req, res) => {
 		const userExists = await findUserByEmail({ email });
 
 		if (userExists)
-			return res.status(409).send({ errors: ['Email already in used'] });
+			return res.status(409).send({ error: 'Email already in used' });
 
 		const user = await createUserService({ name, email, password });
 
@@ -40,7 +39,8 @@ export const register = async (req, res) => {
 
 		return res.status(201).json(user);
 	} catch (err) {
-		console.error(err);
 		return res.status(500).send();
 	}
 };
+
+export const refresh = async (req, res) => {};

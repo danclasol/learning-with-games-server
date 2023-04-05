@@ -16,11 +16,11 @@ export const updateGame = async (req, res) => {
 		});
 
 		if (updateResult) {
-			res.sendStatus(200);
+			res.status(200).send();
 		} else {
-			res.status(400).json('Game not updated');
+			res.status(400).json({ error: 'Game not updated' });
 		}
 	} catch (err) {
-		res.status(400).json(err.message);
+		res.status(500).send();
 	}
 };

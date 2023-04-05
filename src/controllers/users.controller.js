@@ -14,10 +14,10 @@ export const getCurrentUser = async (req, res) => {
 		if (user) {
 			res.status(200).json(user);
 		} else {
-			res.status(404).json('User not exists');
+			res.status(404).json({ error: 'User not exists' });
 		}
 	} catch (err) {
-		res.status(400).json('User not exists');
+		res.status(500).send();
 	}
 };
 
@@ -30,10 +30,10 @@ export const getUserById = async (req, res) => {
 		if (user) {
 			res.status(200).json(user);
 		} else {
-			res.status(404).json('User not exists');
+			res.status(404).json({ error: 'User not exists' });
 		}
 	} catch (err) {
-		res.status(400).json('User not exists');
+		res.status(500).send();
 	}
 };
 
@@ -49,12 +49,12 @@ export const createUser = async (req, res) => {
 		});
 
 		if (!newUser) {
-			res.status(400).json('User not exists');
+			res.status(400).json({ error: 'User not exists' });
 		}
 
 		res.status(202).json(newUser);
 	} catch (err) {
-		res.status(400).json(err.message);
+		res.status(500).send();
 	}
 };
 
@@ -73,10 +73,10 @@ export const updateUser = async (req, res) => {
 		if (updateResult) {
 			res.sendStatus(200);
 		} else {
-			res.status(400).json('User not updted');
+			res.status(400).json({ error: 'User not exists' });
 		}
 	} catch (err) {
-		res.status(400).json(err.message);
+		res.status(500).send();
 	}
 };
 
@@ -89,9 +89,9 @@ export const deleteUser = async (req, res) => {
 		if (deletedResult) {
 			res.sendStatus(200);
 		} else {
-			res.status(400).json('User not deleted');
+			res.status(400).json({ error: 'User not exists' });
 		}
 	} catch (err) {
-		res.status(400).json(err.message);
+		res.status(500).send();
 	}
 };
