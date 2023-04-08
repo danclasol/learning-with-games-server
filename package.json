@@ -1,6 +1,6 @@
 {
-	"name": "template-node-project",
-	"description": "Template for projects with Node.js",
+	"name": "learning-with-games-server",
+	"description": "Learning with games API",
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
