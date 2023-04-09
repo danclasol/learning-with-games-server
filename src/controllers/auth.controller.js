@@ -5,14 +5,17 @@ import { compare } from 'bcrypt';
 export const login = async (req, res) => {
 	const { email, password } = req.body;
 
+	console.log('login controller');
+
 	try {
 		const user = await findUserByEmail({ email });
 
-		if (!user) return res.status(401).send();
+		if (!user) return res.status(401).send({ error: 'Bad credentials' });
 
 		const checkPassword = await compare(password, user.password);
 
-		if (!checkPassword) res.status(401).send();
+		if (!checkPassword)
+			return res.status(401).send({ error: 'Bad credentials' });
 
 		const accessToken = await generateAccessToken({ id: user.id });
 
@@ -34,7 +37,7 @@ export const register = async (req, res) => {
 		const user = await createUserService({ name, email, password });
 
 		if (!user) {
-			return res.status(400).send();
+			return res.status(400).send({ error: 'User not created' });
 		}
 
 		return res.status(201).json(user);
@@ -42,5 +45,3 @@ export const register = async (req, res) => {
 		return res.status(500).send();
 	}
 };
-
-export const refresh = async (req, res) => {};
