@@ -24,7 +24,7 @@ const ajv = new Ajv({ allErrors: true })
 	.addKeyword('modifier');
 
 ajv.addFormat('password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/);
-addFormats(ajv, ['email', 'password']);
+addFormats(ajv, ['email']);
 addErrors(ajv);
 
 const validateSchema = ajv.compile(RegisterDTOSchema);

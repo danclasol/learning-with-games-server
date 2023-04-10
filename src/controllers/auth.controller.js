@@ -5,8 +5,6 @@ import { compare } from 'bcrypt';
 export const login = async (req, res) => {
 	const { email, password } = req.body;
 
-	console.log('login controller');
-
 	try {
 		const user = await findUserByEmail({ email });
 
@@ -27,6 +25,8 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
 	const { name, email, password } = req.body;
+
+	console.log({ name, email, password });
 
 	try {
 		const userExists = await findUserByEmail({ email });
