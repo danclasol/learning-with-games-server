@@ -2,6 +2,7 @@ import userTokenDTO from '#Dto/user-token.dto.js';
 import authRouter from '#Routes/auth.routes.js';
 import findingPairGamesRouter from '#Routes/game-finding-pairs.routes.js';
 import hangmanGamesRouter from '#Routes/game-hangman.routes.js';
+import quizGamesRouter from '#Routes/game-quiz.routes.js';
 import gamesRouter from '#Routes/games.routes.js';
 import usersRouter from '#Routes/users.routes.js';
 import cors from 'cors';
@@ -32,5 +33,6 @@ expressApp.use(
 	findingPairGamesRouter
 );
 expressApp.use(`/${VERSION_API}/games/:id/hangman/`, hangmanGamesRouter);
+expressApp.use(`/${VERSION_API}/games/:id/quiz/`, quizGamesRouter);
 
 export default expressApp;
