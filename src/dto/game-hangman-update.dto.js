@@ -2,11 +2,11 @@ import { titleDTOSchema } from '#Dto/dto-types.js';
 import { Type } from '@sinclair/typebox';
 import Ajv from 'ajv';
 import addErrors from 'ajv-errors';
-import addFormats from 'ajv-formats';
 
-const UpdateGameDTOSchema = Type.Object(
+const UpdateHangmanGameDTOSchema = Type.Object(
 	{
 		type: Type.String(),
+		mode: Type.Optional(Type.String()),
 		title: titleDTOSchema,
 		words: Type.Optional(
 			Type.Array(Type.Object({ word: Type.String(), maxTries: Type.Number() }))
@@ -20,12 +20,11 @@ const UpdateGameDTOSchema = Type.Object(
 const ajv = new Ajv({ allErrors: true })
 	.addKeyword('kind')
 	.addKeyword('modifier');
-addFormats(ajv, ['date']);
 addErrors(ajv);
 
-const validateSchema = ajv.compile(UpdateGameDTOSchema);
+const validateSchema = ajv.compile(UpdateHangmanGameDTOSchema);
 
-const updateGameDTO = (req, res, next) => {
+const updateHangmanGameDTO = (req, res, next) => {
 	const isDTOValid = validateSchema(req.body);
 
 	if (!isDTOValid) {
@@ -37,4 +36,4 @@ const updateGameDTO = (req, res, next) => {
 	next();
 };
 
-export default updateGameDTO;
+export default updateHangmanGameDTO;
