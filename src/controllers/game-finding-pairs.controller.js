@@ -4,12 +4,12 @@ export const updateGame = async (req, res) => {
 	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
-	const { type, title, pairs } = body;
+	const { title, mode, pairs } = body;
 
 	try {
 		const updateResult = await updateGameService({
 			id,
-			type,
+			mode,
 			title,
 			pairs,
 			userId,

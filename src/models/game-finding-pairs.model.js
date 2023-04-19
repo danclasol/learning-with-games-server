@@ -9,6 +9,9 @@ const FindingPairsGameSchema = new Schema(
 		type: {
 			type: String,
 		},
+		mode: {
+			type: String,
+		},
 		title: {
 			type: String,
 			required: true,

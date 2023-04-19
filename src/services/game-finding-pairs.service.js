@@ -1,7 +1,7 @@
 import FindingPairsGameModel from '#Models/game-finding-pairs.model.js';
 import { existsGameByIdService } from './games.service.js';
 
-export const updateGameService = async ({ id, title, pairs }) => {
+export const updateGameService = async ({ id, mode, title, pairs }) => {
 	const gameExists = await existsGameByIdService({ id });
 
 	if (!gameExists) {
@@ -13,6 +13,7 @@ export const updateGameService = async ({ id, title, pairs }) => {
 		{
 			$set: {
 				title,
+				mode,
 				pairs,
 			},
 		}

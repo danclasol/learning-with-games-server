@@ -6,6 +6,7 @@ import addErrors from 'ajv-errors';
 const UpdateFindingPairsGameDTOSchema = Type.Object(
 	{
 		type: Type.String(),
+		mode: Type.Optional(Type.String()),
 		title: titleDTOSchema,
 		pairs: Type.Optional(
 			Type.Array(Type.Object({ text: Type.String(), image: Type.String() }))
