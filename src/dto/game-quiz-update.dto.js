@@ -11,6 +11,7 @@ const UpdateQuizGameDTOSchema = Type.Object(
 			Type.Array(
 				Type.Object({
 					question: Type.String(),
+					image: Type.Optional(Type.String()),
 					points: Type.Number(),
 					answer: Type.Number(),
 					options: Type.Array(Type.Object({ text: Type.String() })),

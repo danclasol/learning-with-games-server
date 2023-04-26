@@ -23,6 +23,7 @@ const QuizGameSchema = new Schema(
 		questions: [
 			{
 				question: { type: String },
+				image: { type: String },
 				points: { type: Number },
 				answer: { type: Number },
 				options: [{ text: { type: String } }],
