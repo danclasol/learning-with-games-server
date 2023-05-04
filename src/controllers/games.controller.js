@@ -1,4 +1,5 @@
 import {
+	cloneGameService,
 	createGameService,
 	deleteGameService,
 	findGameById,
@@ -39,7 +40,6 @@ export const getUserGames = async (req, res) => {
 			res.status(404).json({ error: 'User not exists' });
 		}
 	} catch (err) {
-		console.log(err);
 		res.status(500).send();
 	}
 };
@@ -81,6 +81,34 @@ export const createGame = async (req, res) => {
 
 		res.status(202).json(newGame);
 	} catch (err) {
+		res.status(500).send();
+	}
+};
+
+export const cloneGame = async (req, res) => {
+	const userId = req.userId;
+	const { body } = req;
+	const { idOld, idNew, type, title, groupId } = body;
+
+	console.log({ idOld, idNew, type, title, groupId });
+
+	try {
+		const newGame = await cloneGameService({
+			idOld,
+			idNew,
+			type,
+			title,
+			groupId,
+			userId,
+		});
+
+		if (!newGame) {
+			res.status(400).json({ error: 'Game not created' });
+		}
+
+		res.status(202).json(newGame);
+	} catch (err) {
+		console.log(err);
 		res.status(500).send();
 	}
 };

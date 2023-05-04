@@ -37,16 +37,16 @@ export const findUserGamesService = async ({
 
 	if (groupId) filter.groupId = groupId;
 
-	const games = await GameModel.find(filter)
+	const data = await GameModel.find(filter)
 		.sort({ [sort]: order })
 		.skip((page - 1) * 10)
 		.limit(limit)
 		.exec();
 
-	const gamesResult = games.map(game => removeIdMongoDB(game));
+	const games = data.map(game => removeIdMongoDB(game));
 
-	const gamesResult2 = await Promise.all(
-		gamesResult.map(async game => {
+	const gamesResult = await Promise.all(
+		games.map(async game => {
 			const group = await findGroupById({ id: game.groupId });
 
 			return {
@@ -56,9 +56,7 @@ export const findUserGamesService = async ({
 		})
 	);
 
-	console.log({ gamesResult2 });
-
-	return gamesResult2;
+	return gamesResult;
 };
 
 export const findGameById = async ({ userId, id }) => {
@@ -91,6 +89,45 @@ export const createGameService = async ({
 	}
 
 	const game = createGame({ id, type, title, groupId, userId });
+
+	const newGame = await game.save();
+	const resultGame = removeIdMongoDB(newGame);
+
+	return resultGame;
+};
+
+export const cloneGameService = async ({
+	idOld,
+	idNew,
+	type,
+	title,
+	groupId,
+	userId,
+}) => {
+	const gameExists = await findGameById({ id: idOld });
+
+	console.log({ gameExists });
+
+	if (!gameExists) {
+		throw new Error('Game to clone not exists');
+	}
+
+	const game = createGame({ id: idNew, type, title, groupId, userId });
+
+	// Clone properties
+	const {
+		id,
+		type: typeOld,
+		title: titleOld,
+		creationDate,
+		userId: userIdOld,
+		createdAt,
+		updatedAt,
+		...rest
+	} = gameExists;
+
+	const gameCloned = { ...game._doc, ...rest, _id: idNew };
+	game._doc = gameCloned;
 
 	const newGame = await game.save();
 	const resultGame = removeIdMongoDB(newGame);
