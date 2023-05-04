@@ -81,7 +81,7 @@ export const updateGroup = async (req, res) => {
 	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
-	const { name, level, course, games } = body;
+	const { name, level, course } = body;
 
 	try {
 		const updateResult = await updateGroupService({
@@ -89,7 +89,6 @@ export const updateGroup = async (req, res) => {
 			name,
 			level,
 			course,
-			games,
 			userId,
 		});
 

@@ -21,12 +21,14 @@ const GroupSchema = new Schema(
 			minlength: 2,
 			maxlength: 30,
 			trim: true,
+			set: a => (a === '' ? undefined : a),
 		},
 		course: {
 			type: String,
 			minlength: 2,
 			maxlength: 30,
 			trim: true,
+			set: a => (a === '' ? undefined : a),
 		},
 		creationDate: {
 			type: Date,

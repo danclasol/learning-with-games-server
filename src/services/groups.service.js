@@ -78,13 +78,7 @@ export const createGroupService = async ({
 	return resultGroup;
 };
 
-export const updateGroupService = async ({
-	id,
-	name,
-	level,
-	course,
-	games,
-}) => {
+export const updateGroupService = async ({ id, name, level, course }) => {
 	const groupExists = await existsGroupByIdService({ id });
 
 	if (!groupExists) {
@@ -98,7 +92,6 @@ export const updateGroupService = async ({
 				name,
 				level,
 				course,
-				games,
 			},
 		}
 	);
