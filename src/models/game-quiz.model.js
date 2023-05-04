@@ -29,6 +29,9 @@ const QuizGameSchema = new Schema(
 				options: [{ text: { type: String } }],
 			},
 		],
+		groupId: {
+			type: String,
+		},
 		userId: {
 			type: String,
 			required: true,

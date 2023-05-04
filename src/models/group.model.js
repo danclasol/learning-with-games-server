@@ -12,8 +12,20 @@ const GroupSchema = new Schema(
 		name: {
 			type: String,
 			required: true,
-			minlength: 2,
+			minlength: 4,
 			maxlength: 50,
+			trim: true,
+		},
+		level: {
+			type: String,
+			minlength: 2,
+			maxlength: 30,
+			trim: true,
+		},
+		course: {
+			type: String,
+			minlength: 2,
+			maxlength: 30,
 			trim: true,
 		},
 		creationDate: {

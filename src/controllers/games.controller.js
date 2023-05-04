@@ -9,13 +9,19 @@ import {
 
 export const getUserGames = async (req, res) => {
 	const userId = req.userId;
-	const { title, type, page, limit, sort, order } = req.query;
+	const { groupId, title, type, page, limit, sort, order } = req.query;
 
 	try {
-		const totalGames = await findUserTotalGameService({ userId, title, type });
+		const totalGames = await findUserTotalGameService({
+			userId,
+			groupId,
+			title,
+			type,
+		});
 
 		const games = await findUserGamesService({
 			userId,
+			groupId,
 			title,
 			type,
 			page,
@@ -33,6 +39,7 @@ export const getUserGames = async (req, res) => {
 			res.status(404).json({ error: 'User not exists' });
 		}
 	} catch (err) {
+		console.log(err);
 		res.status(500).send();
 	}
 };
@@ -57,13 +64,14 @@ export const getGameById = async (req, res) => {
 export const createGame = async (req, res) => {
 	const userId = req.userId;
 	const { body } = req;
-	const { id, type, title } = body;
+	const { id, type, title, groupId } = body;
 
 	try {
 		const newGame = await createGameService({
 			id,
 			type,
 			title,
+			groupId,
 			userId,
 		});
 
@@ -81,13 +89,14 @@ export const updateGame = async (req, res) => {
 	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
-	const { type, title } = body;
+	const { type, title, groupId } = body;
 
 	try {
 		const updateResult = await updateGameService({
 			id,
 			type,
 			title,
+			groupId,
 			userId,
 		});
 

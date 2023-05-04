@@ -34,7 +34,7 @@ export const findUserGroupsService = async ({
 	return groupsResult;
 };
 
-export const findGroupById = async ({ userId, id }) => {
+export const findGroupById = async ({ id }) => {
 	const data = await GroupModel.findOne({
 		_id: id,
 		// userId,
@@ -50,14 +50,27 @@ export const existsGroupByIdService = async ({ id }) => {
 	return Boolean(game);
 };
 
-export const createGroupService = async ({ id, name, userId }) => {
+export const createGroupService = async ({
+	id,
+	name,
+	level,
+	course,
+	userId,
+}) => {
 	const groupExists = await existsGroupByIdService({ id });
 
 	if (groupExists) {
 		throw new Error('Group already exists');
 	}
 
-	const group = GroupModel({ _id: id, name, creationDate: new Date(), userId });
+	const group = GroupModel({
+		_id: id,
+		name,
+		level,
+		course,
+		creationDate: new Date(),
+		userId,
+	});
 
 	const newGroup = await group.save();
 	const resultGroup = removeIdMongoDB(newGroup);
@@ -65,7 +78,13 @@ export const createGroupService = async ({ id, name, userId }) => {
 	return resultGroup;
 };
 
-export const updateGroupService = async ({ id, name }) => {
+export const updateGroupService = async ({
+	id,
+	name,
+	level,
+	course,
+	games,
+}) => {
 	const groupExists = await existsGroupByIdService({ id });
 
 	if (!groupExists) {
@@ -77,6 +96,9 @@ export const updateGroupService = async ({ id, name }) => {
 		{
 			$set: {
 				name,
+				level,
+				course,
+				games,
 			},
 		}
 	);

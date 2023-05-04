@@ -29,6 +29,9 @@ const FindingPairsGameSchema = new Schema(
 				image: { type: String },
 			},
 		],
+		groupId: {
+			type: String,
+		},
 		userId: {
 			type: String,
 			required: true,

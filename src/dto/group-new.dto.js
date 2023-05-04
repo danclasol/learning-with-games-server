@@ -8,6 +8,8 @@ const NewGroupDTOSchema = Type.Object(
 	{
 		id: Type.String(),
 		name: titleDTOSchema,
+		level: Type.Optional(Type.String()),
+		course: Type.Optional(Type.String()),
 	},
 	{
 		additionalProperties: true,

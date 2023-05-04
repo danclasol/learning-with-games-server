@@ -20,6 +20,9 @@ const GameSchema = new Schema(
 			type: Date,
 			required: true,
 		},
+		groupId: {
+			type: String,
+		},
 		userId: {
 			type: String,
 			required: true,

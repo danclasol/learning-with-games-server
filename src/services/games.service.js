@@ -1,14 +1,17 @@
 import GameModel from '#Models/game.model.js';
 import { createGame } from '#Models/gameFactory.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
+import { findGroupById } from './groups.service.js';
 
 export const findUserTotalGameService = async ({
 	userId,
+	groupId,
 	title = '',
 	type = '',
 }) => {
 	const filter = {
 		userId,
+		groupId,
 		title: { $regex: title, $options: 'i' },
 		type: { $regex: type, $options: 'i' },
 	};
@@ -18,6 +21,7 @@ export const findUserTotalGameService = async ({
 
 export const findUserGamesService = async ({
 	userId,
+	groupId,
 	title = '',
 	type = '',
 	page,
@@ -31,6 +35,8 @@ export const findUserGamesService = async ({
 		type: { $regex: type, $options: 'i' },
 	};
 
+	if (groupId) filter.groupId = groupId;
+
 	const games = await GameModel.find(filter)
 		.sort({ [sort]: order })
 		.skip((page - 1) * 10)
@@ -39,7 +45,20 @@ export const findUserGamesService = async ({
 
 	const gamesResult = games.map(game => removeIdMongoDB(game));
 
-	return gamesResult;
+	const gamesResult2 = await Promise.all(
+		gamesResult.map(async game => {
+			const group = await findGroupById({ id: game.groupId });
+
+			return {
+				...game,
+				group,
+			};
+		})
+	);
+
+	console.log({ gamesResult2 });
+
+	return gamesResult2;
 };
 
 export const findGameById = async ({ userId, id }) => {
@@ -58,14 +77,20 @@ export const existsGameByIdService = async ({ id }) => {
 	return Boolean(game);
 };
 
-export const createGameService = async ({ id, type, title, userId }) => {
+export const createGameService = async ({
+	id,
+	type,
+	title,
+	groupId,
+	userId,
+}) => {
 	const gameExists = await existsGameByIdService({ id });
 
 	if (gameExists) {
 		throw new Error('Game already exists');
 	}
 
-	const game = createGame({ id, type, title, userId });
+	const game = createGame({ id, type, title, groupId, userId });
 
 	const newGame = await game.save();
 	const resultGame = removeIdMongoDB(newGame);

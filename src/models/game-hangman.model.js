@@ -26,6 +26,9 @@ const HangmanGameSchema = new Schema(
 				maxTries: { type: Number },
 			},
 		],
+		groupId: {
+			type: String,
+		},
 		userId: {
 			type: String,
 			required: true,

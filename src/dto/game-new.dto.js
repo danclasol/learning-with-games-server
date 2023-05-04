@@ -9,6 +9,7 @@ const NewGameDTOSchema = Type.Object(
 		id: Type.String(),
 		type: Type.String(),
 		title: titleDTOSchema,
+		groupId: Type.Optional(Type.String()),
 	},
 	{
 		additionalProperties: true,

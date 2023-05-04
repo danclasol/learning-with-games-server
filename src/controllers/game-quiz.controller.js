@@ -21,7 +21,6 @@ export const updateGame = async (req, res) => {
 			res.status(400).json({ error: 'Game not updated' });
 		}
 	} catch (err) {
-		console.log(err);
 		res.status(500).send();
 	}
 };

@@ -8,6 +8,7 @@ const UpdateGameDTOSchema = Type.Object(
 	{
 		type: Type.String(),
 		title: titleDTOSchema,
+		groupId: Type.Optional(Type.String()),
 	},
 	{
 		additionalProperties: true,

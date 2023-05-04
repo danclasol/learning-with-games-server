@@ -6,6 +6,8 @@ import addErrors from 'ajv-errors';
 const UpdateGroupDTOSchema = Type.Object(
 	{
 		name: titleDTOSchema,
+		level: Type.Optional(Type.String()),
+		course: Type.Optional(Type.String()),
 	},
 	{
 		additionalProperties: true,

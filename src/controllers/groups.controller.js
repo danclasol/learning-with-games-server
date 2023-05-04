@@ -56,12 +56,14 @@ export const getGroupById = async (req, res) => {
 export const createGroup = async (req, res) => {
 	const userId = req.userId;
 	const { body } = req;
-	const { id, name } = body;
+	const { id, name, level, course } = body;
 
 	try {
 		const newGroup = await createGroupService({
 			id,
 			name,
+			level,
+			course,
 			userId,
 		});
 
@@ -79,12 +81,15 @@ export const updateGroup = async (req, res) => {
 	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
-	const { name } = body;
+	const { name, level, course, games } = body;
 
 	try {
 		const updateResult = await updateGroupService({
 			id,
 			name,
+			level,
+			course,
+			games,
 			userId,
 		});
 
