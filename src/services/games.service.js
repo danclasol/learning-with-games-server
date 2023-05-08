@@ -1,3 +1,4 @@
+import { PAGINATION } from '#Constants/pagination.js';
 import GameModel from '#Models/game.model.js';
 import { createGame } from '#Models/gameFactory.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
@@ -11,10 +12,11 @@ export const findUserTotalGameService = async ({
 }) => {
 	const filter = {
 		userId,
-		groupId,
 		title: { $regex: title, $options: 'i' },
 		type: { $regex: type, $options: 'i' },
 	};
+
+	if (groupId) filter.groupId = groupId;
 
 	return await GameModel.find(filter).exec();
 };
@@ -39,7 +41,7 @@ export const findUserGamesService = async ({
 
 	const data = await GameModel.find(filter)
 		.sort({ [sort]: order })
-		.skip((page - 1) * 10)
+		.skip((page - 1) * PAGINATION.ITEMS_PER_PAGE)
 		.limit(limit)
 		.exec();
 
@@ -57,6 +59,18 @@ export const findUserGamesService = async ({
 	);
 
 	return gamesResult;
+};
+
+export const findAllGamesFromGroupService = async ({ groupId }) => {
+	const filter = {
+		groupId,
+	};
+
+	const data = await GameModel.find(filter).exec();
+
+	const games = data.map(game => removeIdMongoDB(game));
+
+	return games;
 };
 
 export const findGameById = async ({ userId, id }) => {
@@ -79,6 +93,7 @@ export const createGameService = async ({
 	id,
 	type,
 	title,
+	props,
 	groupId,
 	userId,
 }) => {
@@ -88,7 +103,7 @@ export const createGameService = async ({
 		throw new Error('Game already exists');
 	}
 
-	const game = createGame({ id, type, title, groupId, userId });
+	const game = createGame({ id, type, title, props, groupId, userId });
 
 	const newGame = await game.save();
 	const resultGame = removeIdMongoDB(newGame);
@@ -105,8 +120,6 @@ export const cloneGameService = async ({
 	userId,
 }) => {
 	const gameExists = await findGameById({ id: idOld });
-
-	console.log({ gameExists });
 
 	if (!gameExists) {
 		throw new Error('Game to clone not exists');

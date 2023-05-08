@@ -3,13 +3,13 @@ import { Type } from '@sinclair/typebox';
 import Ajv from 'ajv';
 import addErrors from 'ajv-errors';
 
-const CloneGameDTOSchema = Type.Object(
+const CloneGroupDTOSchema = Type.Object(
 	{
 		idOld: Type.String(),
 		idNew: Type.String(),
-		type: Type.String(),
-		title: titleDTOSchema,
-		groupId: Type.Optional(Type.String()),
+		name: titleDTOSchema,
+		level: Type.Optional(Type.String()),
+		course: Type.Optional(Type.String()),
 	},
 	{
 		additionalProperties: true,
@@ -21,9 +21,9 @@ const ajv = new Ajv({ allErrors: true })
 	.addKeyword('modifier');
 addErrors(ajv);
 
-const validateSchema = ajv.compile(CloneGameDTOSchema);
+const validateSchema = ajv.compile(CloneGroupDTOSchema);
 
-const cloneGameDTO = (req, res, next) => {
+const cloneGroupDTO = (req, res, next) => {
 	const isDTOValid = validateSchema(req.body);
 
 	if (!isDTOValid) {
@@ -35,4 +35,4 @@ const cloneGameDTO = (req, res, next) => {
 	next();
 };
 
-export default cloneGameDTO;
+export default cloneGroupDTO;

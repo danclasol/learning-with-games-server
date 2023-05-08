@@ -1,4 +1,5 @@
 import {
+	cloneGroupService,
 	createGroupService,
 	deleteGroupService,
 	findGroupById,
@@ -64,6 +65,32 @@ export const createGroup = async (req, res) => {
 			name,
 			level,
 			course,
+			userId,
+		});
+
+		if (!newGroup) {
+			res.status(400).json({ error: 'Game not created' });
+		}
+
+		res.status(202).json(newGroup);
+	} catch (err) {
+		res.status(500).send();
+	}
+};
+
+export const cloneGroup = async (req, res) => {
+	const userId = req.userId;
+	const { body } = req;
+	const { idOld, idNew, name, level, course, options } = body;
+
+	try {
+		const newGroup = await cloneGroupService({
+			idOld,
+			idNew,
+			name,
+			level,
+			course,
+			options,
 			userId,
 		});
 

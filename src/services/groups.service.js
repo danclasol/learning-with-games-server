@@ -1,5 +1,11 @@
+import { PAGINATION } from '#Constants/pagination.js';
 import GroupModel from '#Models/group.model.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
+import crypto from 'crypto';
+import {
+	createGameService,
+	findAllGamesFromGroupService,
+} from './games.service.js';
 
 export const findUserTotalGroupsService = async ({ userId, name = '' }) => {
 	const filter = {
@@ -25,7 +31,7 @@ export const findUserGroupsService = async ({
 
 	const groups = await GroupModel.find(filter)
 		.sort({ [sort]: order })
-		.skip((page - 1) * 10)
+		.skip((page - 1) * PAGINATION.ITEMS_PER_PAGE)
 		.limit(limit)
 		.exec();
 
@@ -76,6 +82,70 @@ export const createGroupService = async ({
 	const resultGroup = removeIdMongoDB(newGroup);
 
 	return resultGroup;
+};
+
+export const cloneGroupService = async ({
+	idOld,
+	idNew,
+	name,
+	level,
+	course,
+	options,
+	userId,
+}) => {
+	const groupExists = await findGroupById({ id: idOld });
+
+	if (!groupExists) {
+		throw new Error('Group to clone not exists');
+	}
+
+	const resultGroup = await createGroupService({
+		id: idNew,
+		name,
+		level,
+		course,
+		creationDate: new Date(),
+		userId,
+	});
+
+	if (options?.cloneGames) {
+		await cloneGamesFromGroupService({
+			idOld,
+			idNew,
+			userId,
+		});
+	}
+
+	return resultGroup;
+};
+
+export const cloneGamesFromGroupService = async ({ idOld, idNew, userId }) => {
+	const gamesToClone = await findAllGamesFromGroupService({ groupId: idOld });
+
+	gamesToClone.forEach(async game => {
+		// Clone properties
+		const {
+			id,
+			type,
+			title,
+			creationDate,
+			userId: useIdOld,
+			createdAt,
+			updatedAt,
+			...props
+		} = game;
+
+		await createGameService({
+			id: crypto.randomUUID(),
+			type,
+			title,
+			props,
+			groupId: idNew,
+			userId,
+		});
+	});
+
+	return true;
 };
 
 export const updateGroupService = async ({ id, name, level, course }) => {

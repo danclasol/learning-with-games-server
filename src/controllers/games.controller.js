@@ -90,8 +90,6 @@ export const cloneGame = async (req, res) => {
 	const { body } = req;
 	const { idOld, idNew, type, title, groupId } = body;
 
-	console.log({ idOld, idNew, type, title, groupId });
-
 	try {
 		const newGame = await cloneGameService({
 			idOld,
