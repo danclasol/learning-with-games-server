@@ -4,6 +4,7 @@ import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 import crypto from 'crypto';
 import {
 	createGameService,
+	deleteGameService,
 	findAllGamesFromGroupService,
 } from './games.service.js';
 
@@ -178,5 +179,17 @@ export const deleteGroupService = async ({ id }) => {
 
 	const resultDelete = await GroupModel.deleteOne({ _id: id });
 
+	await deleteGamesFromGroupService({ id });
+
 	return resultDelete.deletedCount > 0;
+};
+
+export const deleteGamesFromGroupService = async ({ id }) => {
+	const gamesToDelete = await findAllGamesFromGroupService({ groupId: id });
+
+	gamesToDelete.forEach(async game => {
+		await deleteGameService({ id: game.id });
+	});
+
+	return true;
 };

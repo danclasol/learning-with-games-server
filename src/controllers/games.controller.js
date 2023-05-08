@@ -106,7 +106,6 @@ export const cloneGame = async (req, res) => {
 
 		res.status(202).json(newGame);
 	} catch (err) {
-		console.log(err);
 		res.status(500).send();
 	}
 };
@@ -115,12 +114,11 @@ export const updateGame = async (req, res) => {
 	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
-	const { type, title, groupId } = body;
+	const { title, groupId } = body;
 
 	try {
 		const updateResult = await updateGameService({
 			id,
-			type,
 			title,
 			groupId,
 			userId,

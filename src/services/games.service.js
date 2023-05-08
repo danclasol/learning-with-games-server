@@ -148,8 +148,8 @@ export const cloneGameService = async ({
 	return resultGame;
 };
 
-export const updateGameService = async ({ id, title }) => {
-	const gameExists = await existsGameByIdService(id);
+export const updateGameService = async ({ id, title, groupId }) => {
+	const gameExists = await existsGameByIdService({ id });
 
 	if (!gameExists) {
 		throw new Error('Game not exists');
@@ -160,6 +160,7 @@ export const updateGameService = async ({ id, title }) => {
 		{
 			$set: {
 				title,
+				groupId,
 			},
 		}
 	);
