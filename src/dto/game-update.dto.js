@@ -6,7 +6,7 @@ import addFormats from 'ajv-formats';
 
 const UpdateGameDTOSchema = Type.Object(
 	{
-		title: titleDTOSchema,
+		title: Type.Optional(titleDTOSchema),
 		groupId: Type.Optional(Type.String()),
 	},
 	{

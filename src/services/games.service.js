@@ -81,7 +81,12 @@ export const findGameById = async ({ userId, id }) => {
 
 	const game = data !== null && removeIdMongoDB(data);
 
-	return game;
+	const group = await findGroupById({ id: game.groupId });
+
+	return {
+		...game,
+		group: group?.name,
+	};
 };
 
 export const existsGameByIdService = async ({ id }) => {
