@@ -69,7 +69,7 @@ export const createGroup = async (req, res) => {
 		});
 
 		if (!newGroup) {
-			res.status(400).json({ error: 'Game not created' });
+			res.status(400).json({ error: 'Group not created' });
 		}
 
 		res.status(202).json(newGroup);
@@ -95,7 +95,7 @@ export const cloneGroup = async (req, res) => {
 		});
 
 		if (!newGroup) {
-			res.status(400).json({ error: 'Game not created' });
+			res.status(400).json({ error: 'Group not created' });
 		}
 
 		res.status(202).json(newGroup);

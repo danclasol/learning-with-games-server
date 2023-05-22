@@ -53,8 +53,8 @@ export const findGroupById = async ({ id }) => {
 };
 
 export const existsGroupByIdService = async ({ id }) => {
-	const game = await GroupModel.findOne({ _id: id }).exec();
-	return Boolean(game);
+	const group = await GroupModel.findOne({ _id: id }).exec();
+	return Boolean(group);
 };
 
 export const createGroupService = async ({

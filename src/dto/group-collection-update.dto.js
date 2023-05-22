@@ -3,13 +3,10 @@ import { Type } from '@sinclair/typebox';
 import Ajv from 'ajv';
 import addErrors from 'ajv-errors';
 
-const NewGameDTOSchema = Type.Object(
+const UpdateGroupCollectionDTOSchema = Type.Object(
 	{
-		id: Type.String(),
-		type: Type.String(),
-		title: titleDTOSchema,
-		groupId: Type.Optional(Type.String()),
-		collectionId: Type.Optional(Type.String()),
+		name: titleDTOSchema,
+		parentId: Type.Optional(Type.String()),
 	},
 	{
 		additionalProperties: true,
@@ -21,9 +18,9 @@ const ajv = new Ajv({ allErrors: true })
 	.addKeyword('modifier');
 addErrors(ajv);
 
-const validateSchema = ajv.compile(NewGameDTOSchema);
+const validateSchema = ajv.compile(UpdateGroupCollectionDTOSchema);
 
-const newGameDTO = (req, res, next) => {
+const updateGroupCollectionDTO = (req, res, next) => {
 	const isDTOValid = validateSchema(req.body);
 
 	if (!isDTOValid) {
@@ -35,4 +32,4 @@ const newGameDTO = (req, res, next) => {
 	next();
 };
 
-export default newGameDTO;
+export default updateGroupCollectionDTO;

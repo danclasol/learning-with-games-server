@@ -7,11 +7,13 @@ import { findGroupById } from './groups.service.js';
 export const findUserTotalGameService = async ({
 	userId,
 	groupId,
+	collectionId,
 	title = '',
 	type = '',
 }) => {
 	const filter = {
 		userId,
+		collectionId,
 		title: { $regex: title, $options: 'i' },
 		type: { $regex: type, $options: 'i' },
 	};
@@ -24,6 +26,7 @@ export const findUserTotalGameService = async ({
 export const findUserGamesService = async ({
 	userId,
 	groupId,
+	collectionId,
 	title = '',
 	type = '',
 	page,
@@ -33,6 +36,7 @@ export const findUserGamesService = async ({
 }) => {
 	const filter = {
 		userId,
+		collectionId,
 		title: { $regex: title, $options: 'i' },
 		type: { $regex: type, $options: 'i' },
 	};
@@ -53,7 +57,7 @@ export const findUserGamesService = async ({
 
 			return {
 				...game,
-				group,
+				group: group.name,
 			};
 		})
 	);
@@ -61,9 +65,13 @@ export const findUserGamesService = async ({
 	return gamesResult;
 };
 
-export const findAllGamesFromGroupService = async ({ groupId }) => {
+export const findAllGamesFromGroupService = async ({
+	groupId,
+	collectionId,
+}) => {
 	const filter = {
 		groupId,
+		collectionId,
 	};
 
 	const data = await GameModel.find(filter).exec();
@@ -100,6 +108,7 @@ export const createGameService = async ({
 	title,
 	props,
 	groupId,
+	collectionId,
 	userId,
 }) => {
 	const gameExists = await existsGameByIdService({ id });
@@ -108,7 +117,17 @@ export const createGameService = async ({
 		throw new Error('Game already exists');
 	}
 
-	const game = createGame({ id, type, title, props, groupId, userId });
+	const game = createGame({
+		id,
+		type,
+		title,
+		props,
+		groupId,
+		collectionId,
+		userId,
+	});
+
+	console.log({ game });
 
 	const newGame = await game.save();
 	const resultGame = removeIdMongoDB(newGame);
@@ -122,6 +141,7 @@ export const cloneGameService = async ({
 	type,
 	title,
 	groupId,
+	collectionId,
 	userId,
 }) => {
 	const gameExists = await findGameById({ id: idOld });
@@ -130,7 +150,14 @@ export const cloneGameService = async ({
 		throw new Error('Game to clone not exists');
 	}
 
-	const game = createGame({ id: idNew, type, title, groupId, userId });
+	const game = createGame({
+		id: idNew,
+		type,
+		title,
+		groupId,
+		collectionId,
+		userId,
+	});
 
 	// Clone properties
 	const {

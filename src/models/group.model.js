@@ -30,6 +30,17 @@ const GroupSchema = new Schema(
 			trim: true,
 			set: a => (a === '' ? null : a),
 		},
+		collections: [
+			{
+				id: String,
+				name: String,
+				parentId: String,
+				creationDate: {
+					type: Date,
+					required: true,
+				},
+			},
+		],
 		creationDate: {
 			type: Date,
 			required: true,

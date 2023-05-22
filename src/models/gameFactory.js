@@ -2,7 +2,15 @@ import FindingPairsGameModel from '#Models/game-finding-pairs.model.js';
 import HangmanGameModel from '#Models/game-hangman.model.js';
 import QuizGameModel from './game-quiz.model.js';
 
-export const createGame = ({ id, type, title, props, groupId, userId }) => {
+export const createGame = ({
+	id,
+	type,
+	title,
+	props,
+	groupId,
+	collectionId,
+	userId,
+}) => {
 	let game;
 
 	switch (type) {
@@ -14,6 +22,7 @@ export const createGame = ({ id, type, title, props, groupId, userId }) => {
 				creationDate: new Date(),
 				...props,
 				groupId,
+				collectionId,
 				userId,
 			});
 
@@ -26,6 +35,7 @@ export const createGame = ({ id, type, title, props, groupId, userId }) => {
 				creationDate: new Date(),
 				...props,
 				groupId,
+				collectionId,
 				userId,
 			});
 
@@ -39,6 +49,7 @@ export const createGame = ({ id, type, title, props, groupId, userId }) => {
 				creationDate: new Date(),
 				...props,
 				groupId,
+				collectionId,
 				userId,
 			});
 

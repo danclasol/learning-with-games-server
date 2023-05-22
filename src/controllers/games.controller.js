@@ -10,12 +10,14 @@ import {
 
 export const getUserGames = async (req, res) => {
 	const userId = req.userId;
-	const { groupId, title, type, page, limit, sort, order } = req.query;
+	const { groupId, collectionId, title, type, page, limit, sort, order } =
+		req.query;
 
 	try {
 		const totalGames = await findUserTotalGameService({
 			userId,
 			groupId,
+			collectionId,
 			title,
 			type,
 		});
@@ -23,6 +25,7 @@ export const getUserGames = async (req, res) => {
 		const games = await findUserGamesService({
 			userId,
 			groupId,
+			collectionId,
 			title,
 			type,
 			page,
@@ -64,7 +67,7 @@ export const getGameById = async (req, res) => {
 export const createGame = async (req, res) => {
 	const userId = req.userId;
 	const { body } = req;
-	const { id, type, title, groupId } = body;
+	const { id, type, title, groupId, collectionId } = body;
 
 	try {
 		const newGame = await createGameService({
@@ -72,6 +75,7 @@ export const createGame = async (req, res) => {
 			type,
 			title,
 			groupId,
+			collectionId,
 			userId,
 		});
 

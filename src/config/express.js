@@ -4,6 +4,7 @@ import findingPairGamesRouter from '#Routes/game-finding-pairs.routes.js';
 import hangmanGamesRouter from '#Routes/game-hangman.routes.js';
 import quizGamesRouter from '#Routes/game-quiz.routes.js';
 import gamesRouter from '#Routes/games.routes.js';
+import groupCollectionsRouter from '#Routes/groups-collections.routes.js';
 import groupsRouter from '#Routes/groups.routes.js';
 import usersRouter from '#Routes/users.routes.js';
 import cors from 'cors';
@@ -29,6 +30,7 @@ expressApp.use(`/${VERSION_API}/auth`, authRouter);
 expressApp.use(userTokenDTO);
 expressApp.use(`/${VERSION_API}/users`, usersRouter);
 expressApp.use(`/${VERSION_API}/groups`, groupsRouter);
+expressApp.use(`/${VERSION_API}/groups/:id/folders/`, groupCollectionsRouter);
 expressApp.use(`/${VERSION_API}/games`, gamesRouter);
 expressApp.use(
 	`/${VERSION_API}/games/:id/finding-pairs/`,

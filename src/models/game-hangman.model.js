@@ -29,6 +29,9 @@ const HangmanGameSchema = new Schema(
 		groupId: {
 			type: String,
 		},
+		collectionId: {
+			type: String,
+		},
 		userId: {
 			type: String,
 			required: true,
