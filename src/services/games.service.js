@@ -127,8 +127,6 @@ export const createGameService = async ({
 		userId,
 	});
 
-	console.log({ game });
-
 	const newGame = await game.save();
 	const resultGame = removeIdMongoDB(newGame);
 
