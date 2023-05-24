@@ -13,12 +13,14 @@ export const findUserTotalGameService = async ({
 }) => {
 	const filter = {
 		userId,
-		collectionId,
 		title: { $regex: title, $options: 'i' },
 		type: { $regex: type, $options: 'i' },
 	};
 
-	if (groupId) filter.groupId = groupId;
+	if (groupId) {
+		filter.groupId = groupId;
+		filter.collectionId = collectionId;
+	}
 
 	return await GameModel.find(filter).exec();
 };
@@ -36,12 +38,14 @@ export const findUserGamesService = async ({
 }) => {
 	const filter = {
 		userId,
-		collectionId,
 		title: { $regex: title, $options: 'i' },
 		type: { $regex: type, $options: 'i' },
 	};
 
-	if (groupId) filter.groupId = groupId;
+	if (groupId) {
+		filter.groupId = groupId;
+		filter.collectionId = collectionId;
+	}
 
 	const data = await GameModel.find(filter)
 		.sort({ [sort]: order })
@@ -65,13 +69,9 @@ export const findUserGamesService = async ({
 	return gamesResult;
 };
 
-export const findAllGamesFromGroupService = async ({
-	groupId,
-	collectionId,
-}) => {
+export const findGamesFromGroupService = async ({ groupId }) => {
 	const filter = {
 		groupId,
-		collectionId,
 	};
 
 	const data = await GameModel.find(filter).exec();

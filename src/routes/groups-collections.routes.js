@@ -1,3 +1,4 @@
+import { getUserGames } from '#Controllers/games.controller.js';
 import {
 	createCollection,
 	deleteCollection,
@@ -9,6 +10,8 @@ import { Router } from 'express';
 
 const groupCollectionsRouter = Router({ mergeParams: true });
 
+groupCollectionsRouter.get('/', getUserGames);
+groupCollectionsRouter.get('/:collectionId', getUserGames);
 groupCollectionsRouter.post(
 	'/',
 	validateNewGroupCollectionDTO,

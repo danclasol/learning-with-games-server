@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import {
 	createGameService,
 	deleteGameService,
-	findAllGamesFromGroupService,
+	findGamesFromGroupService,
 } from './games.service.js';
 
 export const findUserTotalGroupsService = async ({ userId, name = '' }) => {
@@ -121,7 +121,7 @@ export const cloneGroupService = async ({
 };
 
 export const cloneGamesFromGroupService = async ({ idOld, idNew, userId }) => {
-	const gamesToClone = await findAllGamesFromGroupService({ groupId: idOld });
+	const gamesToClone = await findGamesFromGroupService({ groupId: idOld });
 
 	gamesToClone.forEach(async game => {
 		// Clone properties
@@ -153,7 +153,7 @@ export const updateGroupService = async ({ id, name, level, course }) => {
 	const groupExists = await existsGroupByIdService({ id });
 
 	if (!groupExists) {
-		throw new Error('Group not exists');
+		throw new Error('Group does not exist');
 	}
 
 	const resultUpdate = await GroupModel.updateOne(
@@ -174,7 +174,7 @@ export const deleteGroupService = async ({ id }) => {
 	const groupExists = await existsGroupByIdService({ id });
 
 	if (!groupExists) {
-		throw new Error('Group not exists');
+		throw new Error('Group does not exist');
 	}
 
 	const resultDelete = await GroupModel.deleteOne({ _id: id });
@@ -185,7 +185,7 @@ export const deleteGroupService = async ({ id }) => {
 };
 
 export const deleteGamesFromGroupService = async ({ id }) => {
-	const gamesToDelete = await findAllGamesFromGroupService({ groupId: id });
+	const gamesToDelete = await findGamesFromGroupService({ groupId: id });
 
 	gamesToDelete.forEach(async game => {
 		await deleteGameService({ id: game.id });
