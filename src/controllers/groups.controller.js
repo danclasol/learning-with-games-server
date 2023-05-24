@@ -81,7 +81,7 @@ export const createGroup = async (req, res) => {
 export const cloneGroup = async (req, res) => {
 	const userId = req.userId;
 	const { body } = req;
-	const { idOld, idNew, name, level, course, options } = body;
+	const { idOld, idNew, name, level, course, collections, options } = body;
 
 	try {
 		const newGroup = await cloneGroupService({
@@ -90,6 +90,7 @@ export const cloneGroup = async (req, res) => {
 			name,
 			level,
 			course,
+			collections,
 			options,
 			userId,
 		});

@@ -62,6 +62,7 @@ export const createGroupService = async ({
 	name,
 	level,
 	course,
+	collections,
 	userId,
 }) => {
 	const groupExists = await existsGroupByIdService({ id });
@@ -75,6 +76,7 @@ export const createGroupService = async ({
 		name,
 		level,
 		course,
+		collections,
 		creationDate: new Date(),
 		userId,
 	});
@@ -91,6 +93,7 @@ export const cloneGroupService = async ({
 	name,
 	level,
 	course,
+	collections,
 	options,
 	userId,
 }) => {
@@ -105,6 +108,7 @@ export const cloneGroupService = async ({
 		name,
 		level,
 		course,
+		collections,
 		creationDate: new Date(),
 		userId,
 	});
