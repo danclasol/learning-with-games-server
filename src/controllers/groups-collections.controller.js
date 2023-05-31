@@ -60,7 +60,7 @@ export const deleteCollection = async (req, res) => {
 
 	try {
 		const deletedResult = await deleteCollectionService({
-			id: collectionId,
+			collectionId,
 			groupId: id,
 			userId,
 		});

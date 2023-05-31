@@ -209,3 +209,41 @@ export const deleteGameService = async ({ id }) => {
 
 	return resultDelete.deletedCount > 0;
 };
+
+export const deleteGamesFromGroupService = async ({ groupId }) => {
+	const groupExists = await findGroupById({ id: groupId });
+
+	if (!groupExists) {
+		throw new Error('Group not exists');
+	}
+
+	const resultDelete = await GameModel.deleteMany({ groupId });
+
+	return resultDelete.deletedCount > 0;
+};
+
+export const deleteGamesFromCollectionService = async ({
+	groupId,
+	collectionId,
+}) => {
+	const groupExists = await findGroupById({ id: groupId });
+
+	if (!groupExists) {
+		throw new Error('Group not exists');
+	}
+
+	const collectionExits = groupExists?.collections.find(
+		item => item.id === collectionId
+	);
+
+	if (!collectionExits) {
+		throw new Error('Collection not exists');
+	}
+
+	const resultDelete = await GameModel.deleteMany({
+		groupId,
+		collectionId,
+	});
+
+	return resultDelete.deletedCount > 0;
+};

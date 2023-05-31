@@ -4,7 +4,7 @@ import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 import crypto from 'crypto';
 import {
 	createGameService,
-	deleteGameService,
+	deleteGamesFromGroupService,
 	findGamesFromGroupService,
 } from './games.service.js';
 
@@ -54,6 +54,7 @@ export const findGroupById = async ({ id }) => {
 
 export const existsGroupByIdService = async ({ id }) => {
 	const group = await GroupModel.findOne({ _id: id }).exec();
+
 	return Boolean(group);
 };
 
@@ -181,19 +182,9 @@ export const deleteGroupService = async ({ id }) => {
 		throw new Error('Group does not exist');
 	}
 
+	await deleteGamesFromGroupService({ groupId: id });
+
 	const resultDelete = await GroupModel.deleteOne({ _id: id });
 
-	await deleteGamesFromGroupService({ id });
-
 	return resultDelete.deletedCount > 0;
-};
-
-export const deleteGamesFromGroupService = async ({ id }) => {
-	const gamesToDelete = await findGamesFromGroupService({ groupId: id });
-
-	gamesToDelete.forEach(async game => {
-		await deleteGameService({ id: game.id });
-	});
-
-	return true;
 };

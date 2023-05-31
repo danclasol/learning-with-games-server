@@ -1,5 +1,23 @@
 import GroupModel from '#Models/group.model.js';
-import { existsGroupByIdService } from './groups.service.js';
+import { deleteGamesFromCollectionService } from './games.service.js';
+import { existsGroupByIdService, findGroupById } from './groups.service.js';
+
+export const findCollectionByParentService = async ({
+	groupId,
+	collectionId,
+}) => {
+	const filter = {
+		_id: groupId,
+	};
+
+	const group = await GroupModel.findOne(filter).exec();
+
+	const collections = group?.collections.filter(
+		item => item.parentId === collectionId
+	);
+
+	return collections;
+};
 
 export const createCollectionService = async ({
 	id,
@@ -57,18 +75,40 @@ export const updateCollectionService = async ({
 	return resultUpdate.modifiedCount > 0;
 };
 
-export const deleteCollectionService = async ({ id, groupId }) => {
-	const groupExists = await existsGroupByIdService({ id: groupId });
+export const deleteCollectionService = async ({ collectionId, groupId }) => {
+	const groupExists = await findGroupById({ id: groupId });
 
 	if (!groupExists) {
 		throw new Error('Group not exists');
 	}
 
+	const collectionExits = groupExists?.collections.find(
+		item => item.id === collectionId
+	);
+
+	if (!collectionExits) {
+		throw new Error('Collection not exists');
+	}
+
+	// Delete collection children
+	const collections = await findCollectionByParentService({
+		groupId,
+		collectionId,
+	});
+
+	collections.forEach(async collection => {
+		await deleteCollectionService({ collectionId: collection.id, groupId });
+	});
+
+	// Delete games from collection
+	await deleteGamesFromCollectionService({ groupId, collectionId });
+
+	// Delete collection
 	const resultDelete = await GroupModel.updateOne(
 		{ _id: groupId },
 		{
 			$pull: {
-				collections: { id },
+				collections: { id: collectionId },
 			},
 		}
 	);
