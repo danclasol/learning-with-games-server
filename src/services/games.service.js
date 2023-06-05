@@ -83,10 +83,9 @@ export const findGamesFromGroupService = async ({ groupId }) => {
 	return games;
 };
 
-export const findGameById = async ({ userId, id }) => {
+export const findGameById = async ({ id }) => {
 	const data = await GameModel.findOne({
 		_id: id,
-		// userId,
 	}).exec();
 
 	const game = data !== null && removeIdMongoDB(data);

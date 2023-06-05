@@ -38,11 +38,10 @@ export const getUserGroups = async (req, res) => {
 };
 
 export const getGroupById = async (req, res) => {
-	const userId = req.userId;
 	const { id } = req.params;
 
 	try {
-		const group = await findGroupById({ id, userId });
+		const group = await findGroupById({ id });
 
 		if (group) {
 			res.status(200).json(group);
@@ -106,7 +105,6 @@ export const cloneGroup = async (req, res) => {
 };
 
 export const updateGroup = async (req, res) => {
-	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
 	const { name, level, course } = body;
@@ -117,7 +115,6 @@ export const updateGroup = async (req, res) => {
 			name,
 			level,
 			course,
-			userId,
 		});
 
 		if (updateResult) {
@@ -131,11 +128,10 @@ export const updateGroup = async (req, res) => {
 };
 
 export const deleteGroup = async (req, res) => {
-	const userId = req.userId;
 	const { id } = req.params;
 
 	try {
-		const deletedResult = await deleteGroupService({ id, userId });
+		const deletedResult = await deleteGroupService({ id });
 
 		if (deletedResult) {
 			res.sendStatus(200);

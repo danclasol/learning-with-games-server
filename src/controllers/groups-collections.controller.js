@@ -5,7 +5,6 @@ import {
 } from '#Services/group-collections.service.js';
 
 export const createCollection = async (req, res) => {
-	const userId = req.userId;
 	const { body } = req;
 	const { id: groupId } = req.params;
 	const { id, name, parentId } = body;
@@ -16,7 +15,6 @@ export const createCollection = async (req, res) => {
 			name,
 			parentId,
 			groupId,
-			userId,
 		});
 
 		if (!newCollection) {
@@ -30,7 +28,6 @@ export const createCollection = async (req, res) => {
 };
 
 export const updateCollection = async (req, res) => {
-	const userId = req.userId;
 	const { id, collectionId } = req.params;
 	const { body } = req;
 	const { name, parentId } = body;
@@ -41,7 +38,6 @@ export const updateCollection = async (req, res) => {
 			name,
 			parentId,
 			groupId: id,
-			userId,
 		});
 
 		if (updateResult) {
@@ -55,14 +51,12 @@ export const updateCollection = async (req, res) => {
 };
 
 export const deleteCollection = async (req, res) => {
-	const userId = req.userId;
 	const { id, collectionId } = req.params;
 
 	try {
 		const deletedResult = await deleteCollectionService({
 			collectionId,
 			groupId: id,
-			userId,
 		});
 
 		if (deletedResult) {

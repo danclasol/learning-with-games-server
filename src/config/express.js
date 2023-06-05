@@ -1,4 +1,4 @@
-import userTokenDTO from '#Dto/user-token.dto.js';
+import validateToken from '#Middlewares/validate-token.js';
 import authRouter from '#Routes/auth.routes.js';
 import findingPairGamesRouter from '#Routes/game-finding-pairs.routes.js';
 import hangmanGamesRouter from '#Routes/game-hangman.routes.js';
@@ -27,7 +27,7 @@ expressApp.use(express.text());
 expressApp.use(`/${VERSION_API}/auth`, authRouter);
 
 // Private Routers
-expressApp.use(userTokenDTO);
+expressApp.use(validateToken);
 expressApp.use(`/${VERSION_API}/users`, usersRouter);
 expressApp.use(`/${VERSION_API}/groups`, groupsRouter);
 expressApp.use(`/${VERSION_API}/groups/:id/folders/`, groupCollectionsRouter);

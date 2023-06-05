@@ -1,6 +1,6 @@
 import { validateAccessToken } from '#Utils/jwt.js';
 
-const userTokenDTO = async (req, res, next) => {
+const validateToken = async (req, res, next) => {
 	const accessToken = req.headers.authorization;
 
 	if (!accessToken) return res.status(401).send();
@@ -19,4 +19,4 @@ const userTokenDTO = async (req, res, next) => {
 	}
 };
 
-export default userTokenDTO;
+export default validateToken;

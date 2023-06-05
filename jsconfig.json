@@ -11,6 +11,8 @@
 			"#Controllers/*": ["./src/controllers/*"],
 			"#Services/*": ["./src/services/*"],
 			"#Schemas/*": ["./src/schemas/*"],
+			"#Errors/*": ["./src/errors/*"],
+			"#Middlewares/*": ["./src/middlewares/*"],
 			"#Models/*": ["./src/models/*"],
 			"#Dto/*": ["./src/dto/*"],
 			"#Utils/*": ["./src/utils/*"]

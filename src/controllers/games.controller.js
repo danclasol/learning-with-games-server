@@ -48,11 +48,10 @@ export const getUserGames = async (req, res) => {
 };
 
 export const getGameById = async (req, res) => {
-	const userId = req.userId;
 	const { id } = req.params;
 
 	try {
-		const game = await findGameById({ id, userId });
+		const game = await findGameById({ id });
 
 		if (game) {
 			res.status(200).json(game);
@@ -115,7 +114,6 @@ export const cloneGame = async (req, res) => {
 };
 
 export const updateGame = async (req, res) => {
-	const userId = req.userId;
 	const { id } = req.params;
 	const { body } = req;
 	const { title, groupId } = body;
@@ -125,7 +123,6 @@ export const updateGame = async (req, res) => {
 			id,
 			title,
 			groupId,
-			userId,
 		});
 
 		if (updateResult) {
@@ -139,11 +136,10 @@ export const updateGame = async (req, res) => {
 };
 
 export const deleteGame = async (req, res) => {
-	const userId = req.userId;
 	const { id } = req.params;
 
 	try {
-		const deletedResult = await deleteGameService({ id, userId });
+		const deletedResult = await deleteGameService({ id });
 
 		if (deletedResult) {
 			res.sendStatus(200);

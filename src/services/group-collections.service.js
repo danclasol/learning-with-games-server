@@ -26,7 +26,6 @@ export const createCollectionService = async ({
 	name,
 	parentId,
 	groupId,
-	userId,
 }) => {
 	const groupExists = await existsGroupByIdService({ id: groupId });
 
