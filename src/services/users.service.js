@@ -1,4 +1,6 @@
 import { SALT } from '#Constants/bycript.js';
+import { EmailAlreadyExistsError } from '#Errors/EmailAlreadyExistsError.js';
+import { UserNotExistsException } from '#Errors/UserNotExistsException.js';
 import UserModel from '#Models/user.model.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 import { hash } from 'bcrypt';
@@ -40,7 +42,7 @@ export const createUserService = async ({ name, email, password }) => {
 	const userExists = await existsUserByEmailService(email);
 
 	if (userExists) {
-		throw new Error('Email already exists');
+		throw new EmailAlreadyExistsError('Email already exists');
 	}
 
 	const hashedPassword = await hash(password, SALT);
@@ -62,7 +64,7 @@ export const updateUserService = async ({ id, name, email }) => {
 	const userExists = await existsUserByIdService({ id });
 
 	if (!userExists) {
-		throw new Error('User not exists');
+		throw new UserNotExistsException('User not exists');
 	}
 
 	const resultUpdate = await UserModel.updateOne(
@@ -82,7 +84,7 @@ export const deleteUserService = async ({ id }) => {
 	const userExists = await existsUserByIdService({ id });
 
 	if (!userExists) {
-		throw new Error('User not exists');
+		throw new UserNotExistsException('User not exists');
 	}
 
 	const resultDelete = await UserModel.deleteOne({ _id: id });

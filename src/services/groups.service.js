@@ -1,4 +1,6 @@
 import { PAGINATION } from '#Constants/pagination.js';
+import { GroupAlreadyExistsException } from '#Errors/GroupAlreadyExistsException.js';
+import { GroupNotExistsException } from '#Errors/GroupNotExistsException.js';
 import GroupModel from '#Models/group.model.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
 import crypto from 'crypto';
@@ -69,7 +71,7 @@ export const createGroupService = async ({
 	const groupExists = await existsGroupByIdService({ id });
 
 	if (groupExists) {
-		throw new Error('Group already exists');
+		throw new GroupAlreadyExistsException('Group already exists');
 	}
 
 	const group = GroupModel({
@@ -101,7 +103,7 @@ export const cloneGroupService = async ({
 	const groupExists = await findGroupById({ id: idOld });
 
 	if (!groupExists) {
-		throw new Error('Group to clone not exists');
+		throw new GroupNotExistsException('Group to clone not exists');
 	}
 
 	const resultGroup = await createGroupService({
@@ -158,7 +160,7 @@ export const updateGroupService = async ({ id, name, level, course }) => {
 	const groupExists = await existsGroupByIdService({ id });
 
 	if (!groupExists) {
-		throw new Error('Group does not exist');
+		throw new GroupNotExistsException('Group does not exist');
 	}
 
 	const resultUpdate = await GroupModel.updateOne(
@@ -179,7 +181,7 @@ export const deleteGroupService = async ({ id }) => {
 	const groupExists = await existsGroupByIdService({ id });
 
 	if (!groupExists) {
-		throw new Error('Group does not exist');
+		throw new GroupNotExistsException('Group does not exist');
 	}
 
 	await deleteGamesFromGroupService({ groupId: id });

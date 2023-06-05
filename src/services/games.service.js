@@ -1,4 +1,6 @@
 import { PAGINATION } from '#Constants/pagination.js';
+import { CollectionNotExistsException } from '#Errors/CollectionNotExistsException.js';
+import { GameNotExistsException } from '#Errors/GameNotExistsException.js';
 import GameModel from '#Models/game.model.js';
 import { createGame } from '#Models/gameFactory.js';
 import { removeIdMongoDB } from '#Utils/removeIdMongoDB.js';
@@ -114,7 +116,7 @@ export const createGameService = async ({
 	const gameExists = await existsGameByIdService({ id });
 
 	if (gameExists) {
-		throw new Error('Game already exists');
+		throw new GameNotExistsException('Game already exists');
 	}
 
 	const game = createGame({
@@ -145,7 +147,7 @@ export const cloneGameService = async ({
 	const gameExists = await findGameById({ id: idOld });
 
 	if (!gameExists) {
-		throw new Error('Game to clone not exists');
+		throw new GameNotExistsException('Game to clone not exists');
 	}
 
 	const game = createGame({
@@ -182,7 +184,7 @@ export const updateGameService = async ({ id, title, groupId }) => {
 	const gameExists = await existsGameByIdService({ id });
 
 	if (!gameExists) {
-		throw new Error('Game not exists');
+		throw new GameNotExistsException('Game not exists');
 	}
 
 	const resultUpdate = await GameModel.updateOne(
@@ -202,7 +204,7 @@ export const deleteGameService = async ({ id }) => {
 	const gameExists = await existsGameByIdService({ id });
 
 	if (!gameExists) {
-		throw new Error('Game not exists');
+		throw new GameNotExistsException('Game not exists');
 	}
 
 	const resultDelete = await GameModel.deleteOne({ _id: id });
@@ -214,7 +216,7 @@ export const deleteGamesFromGroupService = async ({ groupId }) => {
 	const groupExists = await findGroupById({ id: groupId });
 
 	if (!groupExists) {
-		throw new Error('Group not exists');
+		throw new GameNotExistsException('Group not exists');
 	}
 
 	const resultDelete = await GameModel.deleteMany({ groupId });
@@ -229,7 +231,7 @@ export const deleteGamesFromCollectionService = async ({
 	const groupExists = await findGroupById({ id: groupId });
 
 	if (!groupExists) {
-		throw new Error('Group not exists');
+		throw new GameNotExistsException('Group not exists');
 	}
 
 	const collectionExits = groupExists?.collections.find(
@@ -237,7 +239,7 @@ export const deleteGamesFromCollectionService = async ({
 	);
 
 	if (!collectionExits) {
-		throw new Error('Collection not exists');
+		throw new CollectionNotExistsException('Collection not exists');
 	}
 
 	const resultDelete = await GameModel.deleteMany({

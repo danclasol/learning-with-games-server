@@ -1,3 +1,5 @@
+import { CollectionNotExistsException } from '#Errors/CollectionNotExistsException.js';
+import { GroupNotExistsException } from '#Errors/GroupNotExistsException.js';
 import GroupModel from '#Models/group.model.js';
 import { deleteGamesFromCollectionService } from './games.service.js';
 import { existsGroupByIdService, findGroupById } from './groups.service.js';
@@ -29,7 +31,7 @@ export const createCollectionService = async ({
 	const groupExists = await existsGroupByIdService({ id: groupId });
 
 	if (!groupExists) {
-		throw new Error('Group not exists');
+		throw new GroupNotExistsException('Group not exists');
 	}
 
 	const newCollection = {
@@ -59,7 +61,7 @@ export const updateCollectionService = async ({
 	const groupExists = await existsGroupByIdService({ id: groupId });
 
 	if (!groupExists) {
-		throw new Error('Group not exists');
+		throw new GroupNotExistsException('Group not exists');
 	}
 
 	const resultUpdate = await GroupModel.updateOne(
@@ -79,7 +81,7 @@ export const deleteCollectionService = async ({ collectionId, groupId }) => {
 	const groupExists = await findGroupById({ id: groupId });
 
 	if (!groupExists) {
-		throw new Error('Group not exists');
+		throw new GroupNotExistsException('Group not exists');
 	}
 
 	const collectionExits = groupExists?.collections.find(
@@ -87,7 +89,7 @@ export const deleteCollectionService = async ({ collectionId, groupId }) => {
 	);
 
 	if (!collectionExits) {
-		throw new Error('Collection not exists');
+		throw new CollectionNotExistsException('Collection not exists');
 	}
 
 	// Delete collection children

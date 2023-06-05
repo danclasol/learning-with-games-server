@@ -1,3 +1,4 @@
+import { GameNotExistsException } from '#Errors/GameNotExistsException.js';
 import HangmanGameModel from '#Models/game-hangman.model.js';
 import { existsGameByIdService } from './games.service.js';
 
@@ -5,7 +6,7 @@ export const updateGameService = async ({ id, title, words }) => {
 	const gameExists = await existsGameByIdService({ id });
 
 	if (!gameExists) {
-		throw new Error('Game not exists');
+		throw new GameNotExistsException('Game not exists');
 	}
 
 	const resultUpdate = await HangmanGameModel.updateOne(
