@@ -8,7 +8,7 @@ import {
 	updateGameService,
 } from '#Services/games.service.js';
 
-export const getUserGames = async (req, res) => {
+export const getUserGames = async (req, res, next) => {
 	const userId = req.userId;
 	const { groupId, collectionId, title, type, page, limit, sort, order } =
 		req.query;
@@ -43,11 +43,11 @@ export const getUserGames = async (req, res) => {
 			res.status(404).json({ error: 'User not exists' });
 		}
 	} catch (err) {
-		res.status(500).send();
+		next(err);
 	}
 };
 
-export const getGameById = async (req, res) => {
+export const getGameById = async (req, res, next) => {
 	const { id } = req.params;
 
 	try {
@@ -59,11 +59,11 @@ export const getGameById = async (req, res) => {
 			res.status(404).json({ error: 'Game not exists' });
 		}
 	} catch (err) {
-		res.status(500).send();
+		next(err);
 	}
 };
 
-export const createGame = async (req, res) => {
+export const createGame = async (req, res, next) => {
 	const userId = req.userId;
 	const { body } = req;
 	const { id, type, title, groupId, collectionId } = body;
@@ -84,11 +84,11 @@ export const createGame = async (req, res) => {
 
 		res.status(202).json(newGame);
 	} catch (err) {
-		res.status(500).send();
+		next(err);
 	}
 };
 
-export const cloneGame = async (req, res) => {
+export const cloneGame = async (req, res, next) => {
 	const userId = req.userId;
 	const { body } = req;
 	const { idOld, idNew, type, title, groupId } = body;
@@ -109,11 +109,11 @@ export const cloneGame = async (req, res) => {
 
 		res.status(202).json(newGame);
 	} catch (err) {
-		res.status(500).send();
+		next(err);
 	}
 };
 
-export const updateGame = async (req, res) => {
+export const updateGame = async (req, res, next) => {
 	const { id } = req.params;
 	const { body } = req;
 	const { title, groupId } = body;
@@ -131,11 +131,11 @@ export const updateGame = async (req, res) => {
 			res.status(400).json({ error: 'Game not exists' });
 		}
 	} catch (err) {
-		res.status(500).send();
+		next(err);
 	}
 };
 
-export const deleteGame = async (req, res) => {
+export const deleteGame = async (req, res, next) => {
 	const { id } = req.params;
 
 	try {
@@ -147,6 +147,6 @@ export const deleteGame = async (req, res) => {
 			res.status(400).json({ error: 'Game not deleted' });
 		}
 	} catch (err) {
-		res.status(500).json();
+		next(err);
 	}
 };

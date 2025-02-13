@@ -1,3 +1,4 @@
+import errorHandler from '#Middlewares/error-handler.js';
 import validateToken from '#Middlewares/validate-token.js';
 import authRouter from '#Routes/auth.routes.js';
 import findingPairGamesRouter from '#Routes/game-finding-pairs.routes.js';
@@ -38,5 +39,8 @@ expressApp.use(
 );
 expressApp.use(`/${VERSION_API}/games/:id/hangman/`, hangmanGamesRouter);
 expressApp.use(`/${VERSION_API}/games/:id/quiz/`, quizGamesRouter);
+
+// Error handling
+expressApp.use(errorHandler);
 
 export default expressApp;
